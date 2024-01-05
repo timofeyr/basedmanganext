@@ -1,0 +1,13 @@
+import ButtonComponent from "@/components/Button";
+import MangaPage from "@/components/MangaPage";
+import React from "react";
+
+const MangaReader = ({ searchParams }: any) => {
+  return (
+    <ButtonComponent>
+      <MangaPage />
+    </ButtonComponent>
+  );
+};
+
+export default MangaReader;
