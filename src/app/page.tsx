@@ -1,24 +1,23 @@
-import React from "react";
-import * as fs from "fs";
 import Link from "next/link";
+import { supabase } from "../../api";
 
-const mangaFolderPath = "./public/manga/";
-const mangaCollection = fs.readdirSync(mangaFolderPath);
+const page = async () => {
+  const { data: mangas } = await supabase.from("mangas").select("title");
+  if (!mangas) return null;
 
-const page = () => {
   return (
     <>
-      {mangaCollection.map((m: string) => {
+      {mangas.map((manga) => {
         return (
           <Link
             href={{
               pathname: "/chapters",
               query: {
-                manga: m,
+                mangaName: manga.title,
               },
             }}
           >
-            {m}
+            {manga.title}
             <br />
           </Link>
         );

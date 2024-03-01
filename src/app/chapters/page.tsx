@@ -1,30 +1,30 @@
 import React from "react";
-import * as fs from "fs";
 import Link from "next/link";
+import { supabase } from "../../../api";
 
-const page = ({ searchParams }: any) => {
-  const mangaName = searchParams.manga;
-  const mangaFolderPath = "./public/manga/" + mangaName;
-  const chapterCollection = fs.readdirSync(mangaFolderPath);
-  const mangaChapterArr = {
-    mangaName,
-    chapterCollection,
-  };
+const page = async ({ searchParams }: any) => {
+  const name = searchParams;
+
+  const { data: chapters, error } = await supabase.storage
+    .from("basedmanga")
+    .list("manga/" + name.mangaName);
+
+  // if (!chapters) return <h1>Error 404</h1>;  TODO: Add 404 stuff
 
   return (
     <>
-      {mangaChapterArr.chapterCollection.map((c) => {
+      {chapters?.map((c) => {
         return (
           <Link
             href={{
               pathname: "/reader",
               query: {
-                manga: mangaChapterArr.mangaName,
-                chapter: c,
+                mangaName: name.mangaName,
+                chapter: c.name,
               },
             }}
           >
-            {c}
+            {c.name}
             <br />
           </Link>
         );

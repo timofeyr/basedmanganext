@@ -1,31 +1,30 @@
-import ButtonComponent from "@/components/Button";
-import * as fs from "fs";
 import Image from "next/image";
 import React from "react";
+import { supabase } from "../../../api";
 
-const MangaPage = ({ searchParams }: any) => {
-  const fileNames = fs.readdirSync(
-    "./public/manga/" + searchParams.manga + "/" + searchParams.chapter
+const page = async ({ searchParams }: any) => {
+  const chapterPath =
+    "manga/" + searchParams.mangaName + "/" + searchParams.chapter + "/";
+
+  const { data, error } = await supabase.storage
+    .from("basedmanga")
+    .list(chapterPath);
+
+  const names = data?.map((obj) =>
+    supabase.storage.from("basedmanga").getPublicUrl(chapterPath + obj.name)
   );
 
   return (
     <>
-      {fileNames.map((f) => {
+      {names?.map((img) => {
         return (
           <div className="m-auto">
             <Image
               className="mx-auto"
-              src={
-                "/manga/" +
-                searchParams.manga +
-                "/" +
-                searchParams.chapter +
-                "/" +
-                f
-              }
+              src={img.data.publicUrl}
               width={1000}
               height={100}
-              alt={f}
+              alt={searchParams.chapter}
               objectFit="cover"
             />
           </div>
@@ -35,4 +34,4 @@ const MangaPage = ({ searchParams }: any) => {
   );
 };
 
-export default MangaPage;
+export default page;
