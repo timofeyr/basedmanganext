@@ -22,6 +22,8 @@ const page = async () => {
           </Link>
         );
       })}
+      <br />
+      <Link href="/profile">Prifile</Link>
     </>
   );
 };
