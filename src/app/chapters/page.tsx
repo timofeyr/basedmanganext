@@ -1,15 +1,11 @@
 import React from "react";
 import Link from "next/link";
-import { supabase } from "../../../api";
+// import { supabase } from "../../../api";
+import { addBookmark, getChapters } from "./actions";
+import { redirect } from "next/navigation";
 
 const page = async ({ searchParams }: any) => {
-  const name = searchParams;
-
-  const { data: chapters, error } = await supabase.storage
-    .from("basedmanga")
-    .list("manga/" + name.mangaName);
-
-  // if (!chapters) return <h1>Error 404</h1>;  TODO: Add 404 stuff
+  const chapters = await getChapters(searchParams);
 
   return (
     <>
@@ -19,7 +15,7 @@ const page = async ({ searchParams }: any) => {
             href={{
               pathname: "/reader",
               query: {
-                mangaName: name.mangaName,
+                mangaName: searchParams.mangaName,
                 chapter: c.name,
               },
             }}
@@ -29,6 +25,10 @@ const page = async ({ searchParams }: any) => {
           </Link>
         );
       })}
+      <form action={addBookmark}>
+        <input type="hidden" name="manga_name" value={searchParams.mangaName} />
+        <button type="submit">Add to bookmarks</button>
+      </form>
     </>
   );
 };
