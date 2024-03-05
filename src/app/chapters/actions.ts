@@ -23,10 +23,8 @@ export async function addBookmark(formData: FormData) {
     const { data: user } = await supabase.auth.getUser();
     const text = formData.get('manga_name') as string;
 
-    if ((await supabase.from("bookmarks").select("manga_name").match({manga_name: text})).data?.length) {
+    if ((await supabase.from("bookmarks").select("manga_name").match({manga_name: text, user_uuid: user.user?.id})).data?.length) {
         console.log("exists");
-        const { data: bookmarks } = await supabase.from("bookmarks").select("manga_name");
-        console.log(bookmarks);
     } else {
         const { data: error } = await supabase.from("bookmarks").insert({user_uuid: user.user?.id, manga_name: text});
         if (error) {
