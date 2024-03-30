@@ -2,8 +2,7 @@
 
 import { createClient } from "@/utils/supabase/server";
 import { supabase } from "../../../api";
-// import { redirect } from "next/dist/server/api-utils";
-import { redirect } from 'next/navigation'
+import { redirect } from 'next/navigation';
 
 export async function getChapters(param: any) {
     const name = param;

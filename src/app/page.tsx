@@ -23,7 +23,7 @@ const page = async () => {
         );
       })}
       <br />
-      <Link href="/profile">Prifile</Link>
+      <Link href="/profile">Profile</Link>
     </>
   );
 };
