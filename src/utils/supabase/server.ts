@@ -1,7 +1,10 @@
+'use server'
+
 import { createServerClient, type CookieOptions } from '@supabase/ssr'
+import { TIMEOUT } from 'dns'
 import { cookies } from 'next/headers'
 
-export function createClient() {
+export async function createClient() {
   const cookieStore = cookies()
 
   return createServerClient(
@@ -21,7 +24,7 @@ export function createClient() {
             // user sessions.
           }
         },
-        remove(name: string, options: CookieOptions) {
+        remove(name: string, options: CookieOptions) {  
           try {
             cookieStore.set({ name, value: '', ...options })
           } catch (error) {
