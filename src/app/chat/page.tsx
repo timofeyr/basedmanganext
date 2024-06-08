@@ -17,7 +17,7 @@ const supabase = createClient();
 const IndexPage = () => {
   const [conversations, setConversations] = useState<any[]>([]);
   const [selectedConversation, setSelectedConversation] = useState(null);
-  const [messages, setMessages] = useState([]);
+  const [messages, setMessages] = useState<any[]>([]);
   const [newMessage, setNewMessage] = useState("");
 
   useEffect(() => {
@@ -37,7 +37,7 @@ const IndexPage = () => {
     fetchConversations();
   }, []);
 
-  const handleSelectConversation = async (conversationId: number) => {
+  const handleSelectConversation = async (conversationId: any) => {
     setSelectedConversation(conversationId);
     const { data, error } = await supabase
       .from("messages")
