@@ -18,7 +18,7 @@ export async function getChapters(param: any) {
 }
 
 export async function addBookmark(formData: FormData) {
-    const supabase = createClient();
+    const supabase = await createClient();
     const { data: user } = await supabase.auth.getUser();
     const text = formData.get('manga_name') as string;
 
