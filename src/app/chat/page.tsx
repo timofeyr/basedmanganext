@@ -121,7 +121,7 @@ const IndexPage = () => {
               {messages.map((message) => (
                 <div key={message.message_id} className="flex flex-col gap-2">
                   <span className="text-sm text-gray-500">
-                    {message.users.username}:
+                    {/* {message.users.username}: */}
                   </span>
                   <p>{message.content}</p>
                 </div>
