@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { supabase } from "../../api";
+// import { supabase } from "../../api";
+import { createClient } from "@/utils/supabase/client";
 import {
   Card,
   CardContent,
@@ -9,6 +10,7 @@ import {
 import { Button } from "@/components/ui/button";
 
 const page = async () => {
+  const supabase = createClient();
   const { data: mangas } = await supabase.from("mangas").select("title");
   if (!mangas) return null;
   console.log(mangas);

@@ -6,9 +6,9 @@ import { createClient } from "@/utils/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
+// import { Textarea } from "@/components/ui/textarea";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { getServerSideSupabase } from "./action";
+// import { getServerSideSupabase } from "./action";
 
 // export const getSesh = async () => {
 //   const { session } = await getServerSideSupabase();
