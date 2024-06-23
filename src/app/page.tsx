@@ -13,7 +13,7 @@ const page = async () => {
   const supabase = createClient();
   const { data: mangas } = await supabase.from("mangas").select("title");
   if (!mangas) return null;
-  console.log(mangas);
+  // console.log(mangas);
 
   return (
     <div className="container mx-auto px-4 py-8">
