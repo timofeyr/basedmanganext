@@ -61,6 +61,7 @@ import {
   CardHeader,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import TopBar from "@/components/TopBar";
 
 // The modified function to fetch first image, author, and genre
 
@@ -160,53 +161,56 @@ const page = async () => {
 
   const mangasWithDetails = await Promise.all(mangaPromises);
 
-  //   console.log(mangasWithDetails);
+  console.log(mangasWithDetails);
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-8">All Manga</h1>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        {mangasWithDetails.map((manga) => (
-          <Card key={manga.title} className="h-full">
-            <CardHeader>
-              <Link
-                href={{
-                  pathname: "/chapters",
-                  query: {
-                    mangaName: manga.title,
-                  },
-                }}
-              >
-                <img
-                  src={manga.previewImage}
-                  alt={`${manga.title} Preview`}
-                  className="w-full h-auto mb-2"
-                />
-                <h2 className="text-lg font-semibold">{manga.title}</h2>
-                <p>Author: {manga.author}</p>
-                <p>Genre: {manga.genre}</p>
-              </Link>
-            </CardHeader>
-            <CardContent className="flex-grow"></CardContent>{" "}
-            {/* Placeholder for future content */}
-            <CardFooter>
-              {/* <Button variant="outline">Unfollow</Button> */}
-            </CardFooter>
-          </Card>
-        ))}
+    <>
+      <TopBar />
+      <div className="container mx-auto px-4 py-8">
+        <h1 className="text-3xl font-bold mb-8">All Manga</h1>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          {mangasWithDetails.map((manga) => (
+            <Card key={manga.title} className="h-full">
+              <CardHeader>
+                <Link
+                  href={{
+                    pathname: "/chapters",
+                    query: {
+                      mangaName: manga.title,
+                    },
+                  }}
+                >
+                  <img
+                    src={manga.previewImage}
+                    alt={`${manga.title} Preview`}
+                    className="w-full h-auto mb-2"
+                  />
+                  <h2 className="text-lg font-semibold">{manga.title}</h2>
+                  <p>Author: {manga.author}</p>
+                  <p>Genre: {manga.genre}</p>
+                </Link>
+              </CardHeader>
+              <CardContent className="flex-grow"></CardContent>{" "}
+              {/* Placeholder for future content */}
+              <CardFooter>
+                {/* <Button variant="outline">Unfollow</Button> */}
+              </CardFooter>
+            </Card>
+          ))}
+        </div>
+        {/* <div className="mt-8">
+          <Link href="/profile">
+            <Button className="mr-2">Go to Profile</Button>
+          </Link>
+          <Link href="/upload">
+            <Button className="mr-2">Upload manga</Button>
+          </Link>
+          <Link href="/chat">
+            <Button>Chat</Button>
+          </Link>
+        </div> */}
       </div>
-      <div className="mt-8">
-        <Link href="/profile">
-          <Button className="mr-2">Go to Profile</Button>
-        </Link>
-        <Link href="/upload">
-          <Button className="mr-2">Upload manga</Button>
-        </Link>
-        <Link href="/chat">
-          <Button>Chat</Button>
-        </Link>
-      </div>
-    </div>
+    </>
   );
 };
 
