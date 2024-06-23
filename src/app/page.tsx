@@ -11,10 +11,11 @@ import { Button } from "@/components/ui/button";
 const page = async () => {
   const { data: mangas } = await supabase.from("mangas").select("title");
   if (!mangas) return null;
+  console.log(mangas);
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-8">Your Followed Manga</h1>
+      <h1 className="text-3xl font-bold mb-8">All Manga</h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {mangas.map((manga) => (
           <Card key={manga.title} className="h-full">
@@ -33,7 +34,7 @@ const page = async () => {
             <CardContent className="flex-grow"></CardContent>{" "}
             {/* Placeholder for future content */}
             <CardFooter>
-              <Button variant="outline">Unfollow</Button>
+              {/* <Button variant="outline">Unfollow</Button> */}
             </CardFooter>
           </Card>
         ))}

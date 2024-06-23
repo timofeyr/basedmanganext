@@ -25,7 +25,7 @@ const IndexPage = () => {
       const { data, error } = await supabase
         .from("conversations")
         .select(
-          "conversation_id, user1_id, users!conversations_user2_id_fkey (username), created_at"
+          "conversation_id, user1_id, user2_id, users!conversations_user2_id_fkey (username), created_at"
         );
       console.log(data);
       if (error) {
@@ -38,17 +38,48 @@ const IndexPage = () => {
   }, []);
 
   const handleSelectConversation = async (conversationId: any) => {
-    setSelectedConversation(conversationId);
-    const { data, error } = await supabase
-      .from("messages")
-      .select(
-        "message_id, conversation_id, users!messages_sender_id_fkey (username), content, created_at"
-      )
-      .eq("conversation_id", conversationId);
-    if (error) {
+    const { data: currentUser } = await supabase.auth.getUser();
+
+    // Fetch conversation details for permission check
+    const { data: conversationData, error } = await supabase
+      .from("conversations")
+      .select("user1_id, user2_id")
+      .eq("conversation_id", conversationId)
+      .single();
+
+    if (error || !currentUser || !conversationData) {
       console.error(error);
+      setSelectedConversation(null); // Ensure no conversation is selected upon error
+      setMessages([]); // Clear messages to avoid stale data
+      return;
+    }
+
+    // Check if the current user is authorized to view this conversation
+    const isUserInConversation =
+      currentUser.user?.id === conversationData.user1_id ||
+      currentUser.user?.id === conversationData.user2_id;
+
+    if (isUserInConversation) {
+      setSelectedConversation(conversationId);
+
+      // Fetch messages only if the user is authorized
+      const { data: messagesData, error: messagesError } = await supabase
+        .from("messages")
+        .select(
+          "message_id, conversation_id, users!messages_sender_id_fkey (username), content, created_at"
+        )
+        .eq("conversation_id", conversationId);
+
+      if (messagesError) {
+        console.error(messagesError);
+        setMessages([]); // Clear messages in case of error
+      } else {
+        setMessages(messagesData);
+      }
     } else {
-      setMessages(data);
+      console.warn("You are not authorized to view this conversation.");
+      setSelectedConversation(null); // Clear selection
+      setMessages([]); // Clear messages to avoid showing unauthorized data
     }
   };
 
